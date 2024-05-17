@@ -2,6 +2,7 @@ package com.candea.hotelmanagement.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
@@ -29,8 +30,9 @@ public class Hotel {
 
     private double longitude;
 
-    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonProperty("rooms")
+    @JsonManagedReference
     private List<HotelRoom> hotelRooms;
 
     public Hotel() {

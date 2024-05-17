@@ -1,8 +1,42 @@
 package com.candea.hotelmanagement.service;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.candea.hotelmanagement.dao.HotelDao;
+import com.candea.hotelmanagement.entity.Hotel;
 
 @Service
 public class HotelService {
     
+    @Autowired
+    private HotelDao hotelDao;
+
+    public Hotel addHotel(Hotel hotel){
+        return hotelDao.save(hotel);
+    }
+
+    public List<Hotel> getHotels(){
+        List<Hotel> hotels = new ArrayList<>();
+        hotelDao.findAll().forEach(hotels::add);
+        return hotels;
+    }
+
+    public Hotel getHotelById(Integer id){
+        return hotelDao.findById(id).orElse(null);
+    }
+
+    public void deleteHotel(Integer id){
+        hotelDao.deleteById(id);
+    }
+
+    public Hotel updateHotel(Hotel hotel){
+        hotelDao.findById(hotel.getHotelId()).orElseThrow();
+        return hotelDao.save(hotel);
+    }
+
 }
