@@ -1,5 +1,7 @@
 package com.candea.hotelmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,16 +11,23 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class HotelRoom {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer hotelRoomId;
+
     private Integer roomNumber;
-    private RoomType roomType;
+
+    @JsonProperty("type")
+    private Integer roomType;
+
     private double price;
+    
+    @JsonProperty("isAvailable")
     private boolean isAvailable;
 
     @ManyToOne
-    @JoinColumn(name = "hotelId")
+    @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
     public HotelRoom() {
@@ -41,11 +50,11 @@ public class HotelRoom {
         this.roomNumber = roomNumber;
     }
 
-    public RoomType getRoomType() {
+    public Integer getRoomType() {
         return roomType;
     }
 
-    public void setRoomType(RoomType roomType) {
+    public void setRoomType(Integer roomType) {
         this.roomType = roomType;
     }
 
