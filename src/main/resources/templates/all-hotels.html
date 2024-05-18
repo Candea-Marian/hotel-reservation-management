@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Hotel List</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>List of Hotels</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody id="hotel-list">
+            <!-- Hotel data will be injected here by JavaScript -->
+        </tbody>
+    </table>
+    
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: '/get/hotel',
+                method: 'GET',
+                success: function(data) {
+                    var hotels = data;
+                    var hotelList = $('#hotel-list');
+                    hotelList.empty();
+                    for (var i = 0; i < hotels.length; i++) {
+                        var hotel = hotels[i];
+                        var row = '<tr>' +
+                            '<td>' + hotel.id + '</td>' +
+                            '<td>' + hotel.name + '</td>' +
+                            '</tr>';
+                        hotelList.append(row);
+                    }
+                },
+                error: function() {
+                    alert('Failed to fetch hotel data.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
