@@ -27,7 +27,9 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+            .csrf().disable()  // i'm disabling CSRF protection for simplicity; not recommended for production
             .authorizeHttpRequests(requests -> requests
+                .requestMatchers("/addHotel", "/delete/hotel/{id}", "/update/hotel", "/get/hotel/{id}/rooms").permitAll()
                 .anyRequest().authenticated()
             )
             .userDetailsService(userDetailsService)

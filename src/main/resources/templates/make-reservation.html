@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Available rooms</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- mobile metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+    <!-- bootstrap css -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+    <!-- style css -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    <!-- Responsive-->
+    <link rel="stylesheet" th:href="@{/css/responsive.css}" />
+    <!-- fevicon -->
+    <link rel="icon" th:href="@{/images/fevicon.png}" type="image/gif" />
+    <!-- Scrollbar Custom CSS -->
+    <link rel="stylesheet" th:href="@{/css/jquery.mCustomScrollbar.min.css}" />
+    <!-- Tweaks for older IEs -->
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" />
+    <!-- fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700|Righteous&display=swap" rel="stylesheet" />
+    <!-- owl stylesheets -->
+    <link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen" />
+</head>
+<body>
+    <!-- header section start -->
+    <div class="header_section">
+        <div class="header_main">
+            <div class="mobile_menu">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item"><a class="nav-link" th:href="@{/index.html}">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/about.html}">Reservations</a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/services.html}">All hotels</a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/contact.html}">Contact</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            <div class="container-fluid">
+                <div class="menu_main">
+                    <ul>
+                        <li class="active"><a th:href="@{/index.html}">Home</a></li>
+                        <li><a th:href="@{/about.html}">Reservations</a></li>
+                        <li><a th:href="@{/all-hotels.html}">All hotels</a></li>
+                        <li><a th:href="@{/contact.html}">Contact us</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- banner section start -->
+        <div class="banner_section layout_padding">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <form th:action="@{/make-reservation}" method="post">
+                            <div class="form-group text-center">
+                                <label for="checkin" style="font-size: 20px;">Check-in date</label>
+                                <input type="date" class="form-control" id="checkin" name="checkin" required>
+                            </div>
+                            <div class="form-group text-center">
+                                <label for="checkout" style="font-size: 20px;">Checkout date</label>
+                                <input type="date" class="form-control" id="checkout" name="checkout" required>
+                            </div>
+                            <input type="hidden" id="hotelId" name="hotelId" th:value="${hotelId}">
+                            <input type="hidden" id="roomId" name="roomId" th:value="${roomId}">
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <!-- banner section end -->
+    <!-- header section end -->
+    
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/jquery-3.0.0.min.js}"></script>
+    <script th:src="@{/js/plugin.js}"></script>
+    <!-- sidebar -->
+    <script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+    <script th:src="@{/js/custom.js}"></script>
+    <!-- javascript -->
+    <script th:src="@{/js/owl.carousel.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+</body>
+</html>

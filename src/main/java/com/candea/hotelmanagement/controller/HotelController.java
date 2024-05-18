@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.candea.hotelmanagement.entity.Hotel;
+import com.candea.hotelmanagement.entity.HotelRoom;
 import com.candea.hotelmanagement.service.HotelService;
 
 @RestController
@@ -28,6 +29,11 @@ public class HotelController {
     @GetMapping("/get/hotel")
     public List<Hotel> getHotels(){
         return hotelService.getHotels();
+    }
+
+    @GetMapping("/get/hotel/{id}/rooms")
+    public List<HotelRoom> getHotelRooms(@PathVariable Integer id){
+        return hotelService.getHotelsRooms(id);
     }
 
     @GetMapping("/get/hotel/{id}")

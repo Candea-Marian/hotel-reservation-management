@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Available rooms</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- mobile metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+    <!-- bootstrap css -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+    <!-- style css -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    <!-- Responsive-->
+    <link rel="stylesheet" th:href="@{/css/responsive.css}" />
+    <!-- fevicon -->
+    <link rel="icon" th:href="@{/images/fevicon.png}" type="image/gif" />
+    <!-- Scrollbar Custom CSS -->
+    <link rel="stylesheet" th:href="@{/css/jquery.mCustomScrollbar.min.css}" />
+    <!-- Tweaks for older IEs -->
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" />
+    <!-- fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700|Righteous&display=swap" rel="stylesheet" />
+    <!-- owl stylesheets -->
+    <link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen" />
+</head>
+<body>
+    <!-- header section start -->
+    <div class="header_section">
+        <div class="header_main">
+            <div class="mobile_menu">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item"><a class="nav-link" th:href="@{/index.html}">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/about.html}">Reservations</a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/services.html}">All hotels</a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/contact.html}">Contact</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            <div class="container-fluid">
+                <div class="menu_main">
+                    <ul>
+                        <li class="active"><a th:href="@{/index.html}">Home</a></li>
+                        <li><a th:href="@{/about.html}">Reservations</a></li>
+                        <li><a th:href="@{/all-hotels.html}">All hotels</a></li>
+                        <li><a th:href="@{/contact.html}">Contact us</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- banner section start -->
+        <div class="banner_section layout_padding">
+            <div class="container">
+                <h3 class="banner_taital">Available rooms</h3>
+                <div class="table-container">
+                    <table class="table table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Number</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Book it</th>
+                            </tr>
+                        </thead>
+                        <tbody id="hotel-list">
+                            <!-- Hotel data will be injected here by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner section end -->
+    <!-- header section end -->
+
+    <script>
+        // Get the URL of the current page
+        var url = window.location.href;
+    
+        // Split the URL path by '/' and take the last part as the hotel ID
+        var parts = url.split('/');
+        var hotelId = parts[parts.length - 1];
+    
+        $(document).ready(function () {
+            $.ajax({
+                url: "/get/hotel/" + hotelId + "/rooms",
+                method: "GET",
+                success: function (data) {
+                    var rooms = data;
+                    var roomList = $("#hotel-list");
+                    roomList.empty();
+                    for (var i = 0; i < rooms.length; i++) {
+                        var room = rooms[i];
+                        var row = "<tr>" +
+                            "<td>" + room.roomNumber + "</td>" +
+                            "<td>" + room.price + "</td>" +
+                            "<td>" + room.roomType + "</td>" +
+                            '<td> <a href="/make-reservation/' + hotelId + '/' + room.hotelRoomId + '" class="btn btn-dark">book it</a></td>' +
+                            "</tr>";
+                        roomList.append(row);
+                    }
+                },
+                error: function () {
+                    alert("Failed to fetch hotel data.");
+                }
+            });
+        });
+    </script>
+    
+    
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/jquery-3.0.0.min.js}"></script>
+    <script th:src="@{/js/plugin.js}"></script>
+    <!-- sidebar -->
+    <script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+    <script th:src="@{/js/custom.js}"></script>
+    <!-- javascript -->
+    <script th:src="@{/js/owl.carousel.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+</body>
+</html>

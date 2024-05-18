@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.candea.hotelmanagement.dao.HotelDao;
 import com.candea.hotelmanagement.entity.Hotel;
+import com.candea.hotelmanagement.entity.HotelRoom;
 
 @Service
 public class HotelService {
@@ -28,6 +29,15 @@ public class HotelService {
 
     public Hotel getHotelById(Integer id){
         return hotelDao.findById(id).orElse(null);
+    }
+
+    public List<HotelRoom> getHotelsRooms(Integer id){
+        List<HotelRoom> hotelRooms = new ArrayList<>();
+        Hotel hotel = hotelDao.findById(id).orElse(null);
+        if(hotel != null){
+            hotelRooms = hotel.getHotelRooms();
+        }
+        return hotelRooms;
     }
 
     public void deleteHotel(Integer id){
