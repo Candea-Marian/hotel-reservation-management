@@ -19,19 +19,19 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "hotel_id")
+    //@ManyToOne
+    //@JoinColumn(name = "hotel_id")
     private Integer hotelId;
 
-    @ManyToOne
-    @JoinColumn(name = "room_id")
+    //@ManyToOne
+    //@JoinColumn(name = "room_id")
     private Integer roomId;
 
     private Date checkInDate;
     private Date checkOutDate;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    //@ManyToOne
+    //@JoinColumn(name = "user_id")
     private Integer userId;
 
     public Reservation(Integer hotelId, Integer roomId, Date checkInDate, Date checkOutDate, Integer userId) {
