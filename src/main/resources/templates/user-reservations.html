@@ -62,24 +62,23 @@
         <!-- banner section start -->
         <div class="banner_section layout_padding">
             <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-md-6">
-                        <form>
-                            <div class="form-group text-center">
-                                <label for="checkin" style="font-size: 20px;">Check-in date</label>
-                                <input type="date" class="form-control" id="checkin" name="checkin" required>
-                            </div>
-                            <div class="form-group text-center">
-                                <label for="checkout" style="font-size: 20px;">Checkout date</label>
-                                <input type="date" class="form-control" id="checkout" name="checkout" required>
-                            </div>
-                            <input type="hidden" id="hotelId" name="hotelId" th:value="${hotelId}">
-                            <input type="hidden" id="roomId" name="roomId" th:value="${roomId}">
-                            <div class="form-group text-center">
-                                <button id="submitReservation" type="submit" class="btn btn-primary btn-lg">Submit</button>
-                            </div>
-                        </form>
-                    </div>
+                <h3 class="banner_taital">Your reservations</h3>
+                <div class="table-container">
+                    <table class="table table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
+                            <th scope="col">Hotel</th>
+                            <th scope="col">Room</th>
+                            <th scope="col">Check-in date</th>
+                            <th scope="col">Check-out date</th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reservation-list">
+                            <!-- Hotel data will be injected here by JavaScript -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
             
@@ -87,46 +86,35 @@
     </div>
     <!-- banner section end -->
     <!-- header section end -->
-
-    <script>
-        $(document).ready(function(){
-            $("#submitReservation").click(function(){
-                var hotelId = $("#hotelId").val();
-                var roomId = $("#roomId").val();
-                var checkin = $("#checkin").val();
-                var checkout = $("#checkout").val();
-
-                console.log("Hotel ID: " + hotelId);
-                console.log("Room ID: " + roomId);
-                console.log("Check-in: " + checkin);
-                console.log("Check-out: " + checkout);
-
-
-                var reservationData = {
-                    "hotelId": hotelId,
-                    "roomId": roomId,
-                    "checkInDate": checkin,
-                    "checkOutDate": checkout,
-                    "userId": 1 // Hardcoded user ID for now
-                };
-
-                $.ajax({
-                    type: "POST",
-                    url: "/add/reservation",
-                    contentType: "application/json",
-                    data: JSON.stringify(reservationData),
-                    success: function(response){
-                        alert("Reservation added successfully!");
-                    },
-                    error: function(xhr, status, error){
-                        var errorMessage = xhr.responseText ? xhr.responseText : "An error occurred while adding the reservation.";
-                        alert("Error: " + errorMessage);
-                    }
-                });
-            });
-        });
-    </script>
     
+    <script>
+        $(document).ready(function () {
+          $.ajax({
+            url: "/get/user/reservations",
+            method: "GET",
+            success: function (data) {
+              var reservations = data;
+              var reservationList = $("#reservation-list");
+              reservationList.empty();
+              for (var i = 0; i < reservations.length; i++) {
+                var reservation = reservations[i];
+                var row = "<tr>" +
+                  "<td>" + reservation.hotelId + "</td>" +
+                  "<td>" + reservation.roomId + "</td>" +
+                  "<td>" + reservation.checkInDate + "</td>" +
+                  "<td>" + reservation.checkOutDate + "</td>" +
+                  '<td> <a href="" class="btn btn-dark">Edit</a></td>' +
+                  '<td> <a href="" class="btn btn-dark">Delete</a></td>' +
+                  "</tr>";
+                hotelList.append(row);
+              }
+            },
+            error: function () {
+              alert("Failed to fetch user reservations.");
+            },
+          });
+        });
+      </script>
 
     <script th:src="@{/js/jquery.min.js}"></script>
     <script th:src="@{/js/popper.min.js}"></script>

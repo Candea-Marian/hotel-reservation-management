@@ -21,9 +21,13 @@ public class SecurityUser implements UserDetails {
     }
 
     @Override
-        public String getPassword() {
-            return user.getPassword();
-        }
+    public String getPassword() {
+        return user.getPassword();
+    }
+
+    public Integer getId() {
+        return user.getUserId();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

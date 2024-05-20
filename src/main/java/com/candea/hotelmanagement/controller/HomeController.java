@@ -36,6 +36,11 @@ public class HomeController {
         return "make-reservation";
     }
 
+    @GetMapping("/user-reservations")
+    public String userReservations() {
+        return "user-reservations";
+    }
+
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin")

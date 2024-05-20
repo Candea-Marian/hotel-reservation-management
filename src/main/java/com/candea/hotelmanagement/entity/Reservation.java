@@ -1,5 +1,6 @@
 package com.candea.hotelmanagement.entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import jakarta.annotation.Generated;
@@ -27,14 +28,17 @@ public class Reservation {
     //@JoinColumn(name = "room_id")
     private Integer roomId;
 
-    private Date checkInDate;
-    private Date checkOutDate;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
 
     //@ManyToOne
     //@JoinColumn(name = "user_id")
     private Integer userId;
 
-    public Reservation(Integer hotelId, Integer roomId, Date checkInDate, Date checkOutDate, Integer userId) {
+    public Reservation() {
+    }
+
+    public Reservation(Integer hotelId, Integer roomId, LocalDate checkInDate, LocalDate checkOutDate, Integer userId) {
         this.hotelId = hotelId;
         this.roomId = roomId;
         this.checkInDate = checkInDate;
@@ -66,19 +70,19 @@ public class Reservation {
         this.roomId = roomId;
     }
 
-    public Date getCheckInDate() {
+    public LocalDate getCheckInDate() {
         return checkInDate;
     }
 
-    public void setCheckInDate(Date checkInDate) {
+    public void setCheckInDate(LocalDate checkInDate) {
         this.checkInDate = checkInDate;
     }
 
-    public Date getCheckOutDate() {
+    public LocalDate getCheckOutDate() {
         return checkOutDate;
     }
 
-    public void setCheckOutDate(Date checkOutDate) {
+    public void setCheckOutDate(LocalDate checkOutDate) {
         this.checkOutDate = checkOutDate;
     }
 
