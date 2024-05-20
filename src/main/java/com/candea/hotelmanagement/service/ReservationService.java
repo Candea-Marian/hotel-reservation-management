@@ -1,28 +1,17 @@
 package com.candea.hotelmanagement.service;
 
-
-
-import java.security.Security;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.candea.hotelmanagement.dao.ReservationDao;
-import com.candea.hotelmanagement.dao.UserDao;
 import com.candea.hotelmanagement.entity.Reservation;
 import com.candea.hotelmanagement.exception.InvalidReservationException;
 import com.candea.hotelmanagement.util.SecurityUtils;
-
-import io.micrometer.core.instrument.config.validate.InvalidReason;
 
 @Service
 public class ReservationService {
@@ -126,7 +115,7 @@ public class ReservationService {
     }
 
     public List<Reservation> getReservationsByUserId(){
-        
+
         Integer userId = SecurityUtils.getCurrentUserId();
 
         return reservationDao.findByUserId(userId);
