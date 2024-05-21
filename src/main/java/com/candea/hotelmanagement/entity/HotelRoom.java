@@ -1,5 +1,7 @@
 package com.candea.hotelmanagement.entity;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -9,14 +11,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class HotelRoom {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer hotelRoomId;
-
     private Integer roomNumber;
 
     @JsonProperty("type")
@@ -32,16 +32,11 @@ public class HotelRoom {
     @JsonBackReference
     private Hotel hotel;
 
+    @OneToMany(mappedBy = "room")
+    private List<Reservation> reservations;
+
     public HotelRoom() {
 
-    }
-
-    public Integer getHotelRoomId() {
-        return hotelRoomId;
-    }
-
-    public void setHotelRoomId(Integer hotelRoomId) {
-        this.hotelRoomId = hotelRoomId;
     }
 
     public Integer getRoomNumber() {

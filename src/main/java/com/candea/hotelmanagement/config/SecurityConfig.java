@@ -28,7 +28,7 @@ public class SecurityConfig {
         http
             .csrf().disable()  // i'm disabling CSRF protection for simplicity; not recommended for production
             .authorizeHttpRequests(requests -> requests
-                .requestMatchers("/add/reservation","/addHotel", "/delete/hotel/{id}", "/update/hotel", "/get/hotel/{id}/rooms").permitAll()
+                .requestMatchers("/get/hotel/{id}", "/add/reservation","/addHotel", "/delete/hotel/{id}", "/update/hotel", "/get/hotel/{id}/rooms").permitAll()
                 .anyRequest().authenticated()
             )
             .userDetailsService(userDetailsService)

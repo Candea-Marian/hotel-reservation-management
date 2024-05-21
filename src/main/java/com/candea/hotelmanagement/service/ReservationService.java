@@ -8,7 +8,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.candea.hotelmanagement.dao.HotelRoomDao;
 import com.candea.hotelmanagement.dao.ReservationDao;
+import com.candea.hotelmanagement.entity.HotelRoom;
 import com.candea.hotelmanagement.entity.Reservation;
 import com.candea.hotelmanagement.exception.InvalidReservationException;
 import com.candea.hotelmanagement.util.SecurityUtils;
@@ -17,6 +19,9 @@ import com.candea.hotelmanagement.util.SecurityUtils;
 public class ReservationService {
     @Autowired
     private ReservationDao reservationDao;
+
+    @Autowired
+    private HotelRoomDao hotelRoomDao;
 
     public Reservation addReservation(Reservation reservation){
         if (reservation == null) {
@@ -35,9 +40,18 @@ public class ReservationService {
             throw new InvalidReservationException("Check-in date must be in the future");
         }
 
-        if (reservation.getHotelId() == null || reservation.getRoomId() == null || reservation.getUserId() == null) {
-            throw new InvalidReservationException("Hotel ID, room ID, and user ID must be provided");
+        if (reservation.getHotelId() == null || reservation.getUserId() == null) {
+            throw new InvalidReservationException("Hotel id, room id, and user id must be provided");
         }
+
+        // Fetch the HotelRoom from the database using the roomId
+        HotelRoom room = hotelRoomDao.findById(reservation.getRoom().getRoomNumber())
+            .orElseThrow(() -> new InvalidReservationException("Room with id " + reservation.getRoom().getRoomNumber() + " does not exist"));
+
+        //System.out.println("Room: " + room);
+
+        // Set the fetched HotelRoom to the reservation
+        reservation.setRoom(room);
 
 
         return reservationDao.save(reservation);
@@ -79,13 +93,13 @@ public class ReservationService {
     }
 
     public Reservation updateReservation(Reservation reservation){
-        reservationDao.findById(reservation.getReservationId()).orElseThrow();
+        reservationDao.findById(reservation.getId()).orElseThrow();
 
         if (reservation.getCheckInDate().isAfter(reservation.getCheckOutDate())) {
             throw new InvalidReservationException("Check in date must be before check out date");
         }
 
-        if(reservation.getHotelId() == null || reservation.getRoomId() == null || reservation.getUserId() == null){
+        if(reservation.getHotelId() == null || reservation.getRoom() == null || reservation.getUserId() == null){
             throw new InvalidReservationException("Hotel id, room id and user id must be provided");
         }
 

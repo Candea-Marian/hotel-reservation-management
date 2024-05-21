@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -16,38 +18,27 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    //@ManyToOne
-    //@JoinColumn(name = "hotel_id")
     private Integer hotelId;
 
-    //@ManyToOne
-    //@JoinColumn(name = "room_id")
-    private Integer roomId;
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    private HotelRoom room;
 
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
 
-    //@ManyToOne
-    //@JoinColumn(name = "user_id")
     private Integer userId;
 
     public Reservation() {
+
     }
 
-    public Reservation(Integer hotelId, Integer roomId, LocalDate checkInDate, LocalDate checkOutDate, Integer userId) {
-        this.hotelId = hotelId;
-        this.roomId = roomId;
-        this.checkInDate = checkInDate;
-        this.checkOutDate = checkOutDate;
-        this.userId = userId;
-    }
-
-    public Integer getReservationId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setReservationId(Integer reservationId) {
-        this.id = reservationId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getHotelId() {
@@ -58,12 +49,12 @@ public class Reservation {
         this.hotelId = hotelId;
     }
 
-    public Integer getRoomId() {
-        return roomId;
+    public HotelRoom getRoom() {
+        return room;
     }
 
-    public void setRoomId(Integer roomId) {
-        this.roomId = roomId;
+    public void setRoom(HotelRoom room) {
+        this.room = room;
     }
 
     public LocalDate getCheckInDate() {
@@ -90,19 +81,4 @@ public class Reservation {
         this.userId = userId;
     }
 
-
-
-    public Integer getId() {
-        return id;
-    }
-
-
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    
-    
-    
 }

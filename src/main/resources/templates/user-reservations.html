@@ -76,7 +76,7 @@
                             </tr>
                         </thead>
                         <tbody id="reservation-list">
-                            <!-- Hotel data will be injected here by JavaScript -->
+                            <!-- reservations will be injected here by JavaScript -->
                         </tbody>
                     </table>
                 </div>
@@ -98,15 +98,38 @@
               reservationList.empty();
               for (var i = 0; i < reservations.length; i++) {
                 var reservation = reservations[i];
-                var row = "<tr>" +
-                  "<td>" + reservation.hotelId + "</td>" +
-                  "<td>" + reservation.roomId + "</td>" +
-                  "<td>" + reservation.checkInDate + "</td>" +
-                  "<td>" + reservation.checkOutDate + "</td>" +
-                  '<td> <a href="" class="btn btn-dark">Edit</a></td>' +
-                  '<td> <a href="" class="btn btn-dark">Delete</a></td>' +
-                  "</tr>";
-                hotelList.append(row);
+                
+                // Fetch hotel data
+                $.ajax({
+                url: "/get/hotel/" + reservation.hotelId,
+                method: "GET",
+                success: function (hotelData) {
+                    // Find the room in the hotel's room list
+                    var roomData = hotelData.rooms.find(room => room.roomNumber === reservation.room.roomNumber);
+
+                    console.log("Hotel data: " + JSON.stringify(hotelData));
+
+                    if (roomData) {
+                    var row = "<tr>" +
+                        "<td>" + hotelData.name + "</td>" +
+                        "<td>" + roomData.roomNumber + "</td>" +
+                        "<td>" + reservation.checkInDate + "</td>" +
+                        "<td>" + reservation.checkOutDate + "</td>" +
+                        '<td> <a href="" class="btn btn-dark">Edit</a></td>' +
+                        '<td> <a href="" class="btn btn-dark delete-reservation" data-reservation-id="' + reservation.id + '">Delete</a></td>' +
+                        "</tr>";
+                    reservationList.append(row);
+                    } else {
+                        alert("Failed to find room data.");
+                    }
+                },
+                error: function () {
+                    alert("Failed to fetch hotel data.");
+                }
+                });
+
+
+
               }
             },
             error: function () {
@@ -114,6 +137,29 @@
             },
           });
         });
+      </script>
+
+      <script>
+        
+        $(document).on('click', '.delete-reservation', function(e) {
+        e.preventDefault(); // prevent the default action
+
+            var reservationId = $(this).data('reservation-id'); // get the reservation id
+            var row = $(this).closest('tr');
+
+            $.ajax({
+                url: "/delete/reservation/" + reservationId,
+                method: "DELETE",
+                success: function () {
+                    alert("Reservation deleted successfully.");
+                    row.remove();
+                },
+                error: function () {
+                    alert("Failed to delete reservation.");
+                }
+            });
+        });
+
       </script>
 
     <script th:src="@{/js/jquery.min.js}"></script>

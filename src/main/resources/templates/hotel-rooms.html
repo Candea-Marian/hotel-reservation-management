@@ -63,6 +63,28 @@
         <div class="banner_section layout_padding">
             <div class="container">
                 <h3 class="banner_taital">Available rooms</h3>
+
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <form>
+                            <div class="form-group text-center">
+                                <label for="checkin" style="font-size: 20px; margin-bottom: 5px;">Check-in date</label>
+                                <input type="date" class="form-control" id="checkin" name="checkin" style="margin-top: 5px;" required>
+                            </div>
+                            <div class="form-group text-center">
+                                <label for="checkout" style="font-size: 20px; margin-bottom: 5px;">Checkout date</label>
+                                <input type="date" class="form-control" id="checkout" name="checkout" style="margin-top: 5px;" required>
+                            </div>
+                            <input type="hidden" id="hotelId" name="hotelId" th:value="${hotelId}">
+                            <input type="hidden" id="roomId" name="roomId" th:value="${roomId}">
+                            <div class="form-group text-center">
+                                <button id="getRooms" class="btn btn-primary btn-lg">See the available rooms</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
                 <div class="table-container">
                     <table class="table table-bordered">
                         <thead class="thead-dark">
@@ -85,40 +107,89 @@
     <!-- header section end -->
 
     <script>
-        // Get the URL of the current page
-        var url = window.location.href;
-    
-        // Split the URL path by '/' and take the last part as the hotel ID
-        var parts = url.split('/');
-        var hotelId = parts[parts.length - 1];
-    
-        $(document).ready(function () {
-            $.ajax({
-                url: "/get/hotel/" + hotelId + "/rooms",
-                method: "GET",
-                success: function (data) {
-                    var rooms = data;
-                    var roomList = $("#hotel-list");
-                    roomList.empty();
-                    for (var i = 0; i < rooms.length; i++) {
-                        var room = rooms[i];
-                        var row = "<tr>" +
-                            "<td>" + room.roomNumber + "</td>" +
-                            "<td>" + room.price + "</td>" +
-                            "<td>" + room.roomType + "</td>" +
-                            '<td> <a href="/make-reservation/' + hotelId + '/' + room.hotelRoomId + '" class="btn btn-dark">book it</a></td>' +
-                            "</tr>";
-                        roomList.append(row);
+        
+        
+        $(document).ready(function(){
+
+            var hotelId, checkin, checkout;
+
+            $("#getRooms").click(function(){
+                event.preventDefault();
+                hotelId = $("#hotelId").val();
+                checkin = $("#checkin").val();
+                checkout = $("#checkout").val();
+
+                $.ajax({
+                    type: "GET",
+                    url: "/get/available-rooms/" + hotelId,
+                    data: {
+                        "checkin": checkin,
+                        "checkout": checkout
+                    },
+                    success: function(response){
+                        var roomList = $("#hotel-list");
+                        roomList.empty();
+
+                        if (response.length === 0) {
+                            var row = "<tr><td colspan='4'>No rooms available for the selected dates.</td></tr>";
+                        } else {
+                            for (var i = 0; i < response.length; i++) {
+                                var room = response[i];
+                                var row = "<tr>" +
+                                    "<td>" + room.roomNumber + "</td>" +
+                                    "<td>" + room.price + "</td>" +
+                                    "<td>" + room.roomType + "</td>" +
+                                    "<td> <button class='btn btn-dark book-btn' data-room-id='"+ room.roomNumber +"'>book it</button></td>" +
+                                    "</tr>";
+                                roomList.append(row);
+                            }
+                        }
+
+                        $(".book-btn").click(function() {
+                            var roomId = $(this).data("room-id");
+
+                            console.log("Hotel ID: " + hotelId);
+                            console.log("Room ID: " + roomId);
+                            console.log("Check-in: " + checkin);
+                            console.log("Check-out: " + checkout);
+
+                            var reservationData = {
+                                "hotelId": hotelId,
+                                "room": {
+                                    "roomNumber": roomId
+                                },
+                                "checkInDate": checkin,
+                                "checkOutDate": checkout,
+                                "userId": 1 // Hardcoded user ID for now
+                            };
+
+                            $.ajax({
+                                type: "POST",
+                                url: "/add/reservation",
+                                contentType: "application/json",
+                                data: JSON.stringify(reservationData),
+                                success: function(response){
+                                    alert("Reservation added successfully!");
+                                },
+                                error: function(xhr, status, error){
+                                    var errorMessage = xhr.responseText ? xhr.responseText : "An error occurred while adding the reservation.";
+                                    alert("Error: " + errorMessage);
+                                }
+                            });
+                            
+                        });
+
+
+                    },
+                    error: function(xhr, status, error){
+                        var errorMessage = xhr.responseText ? xhr.responseText : "An error occurred while adding the reservation.";
+                        alert("Error: " + errorMessage);
                     }
-                },
-                error: function () {
-                    alert("Failed to fetch the hotel rooms.");
-                }
+                });
             });
         });
     </script>
-    
-    
+
 
     <script th:src="@{/js/jquery.min.js}"></script>
     <script th:src="@{/js/popper.min.js}"></script>
