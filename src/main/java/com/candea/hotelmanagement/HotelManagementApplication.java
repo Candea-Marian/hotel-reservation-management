@@ -20,8 +20,6 @@ public class HotelManagementApplication {
 	CommandLineRunner commandLineRunner(UserDao users, PasswordEncoder encoder) {
 		return args -> {
 			//users.save(new User("user", encoder.encode("password"),"candea.dev@gmail.com","USER"));
-			//users.save(new User("admin",encoder.encode("password"), "caca","USER,ADMIN"));
-
 		};
 	}
 

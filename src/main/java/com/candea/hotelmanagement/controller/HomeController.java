@@ -44,5 +44,10 @@ public class HomeController {
     public String admin(){
         return "Welcome Admin";
     }
+
+    @GetMapping("/map")
+    public String getHotelsInRange(){
+        return "hotels-map";
+    }
     
 }

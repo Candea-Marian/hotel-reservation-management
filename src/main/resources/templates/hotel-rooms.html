@@ -147,6 +147,7 @@
 
                         $(".book-btn").click(function() {
                             var roomId = $(this).data("room-id");
+                            var row = $(this).closest('tr'); // Get the row that contains the clicked button
 
                             console.log("Hotel ID: " + hotelId);
                             console.log("Room ID: " + roomId);
@@ -163,6 +164,8 @@
                                 "userId": 1 // Hardcoded user ID for now
                             };
 
+                            console.log(reservationData);
+
                             $.ajax({
                                 type: "POST",
                                 url: "/add/reservation",
@@ -170,6 +173,7 @@
                                 data: JSON.stringify(reservationData),
                                 success: function(response){
                                     alert("Reservation added successfully!");
+                                    row.remove();
                                 },
                                 error: function(xhr, status, error){
                                     var errorMessage = xhr.responseText ? xhr.responseText : "An error occurred while adding the reservation.";

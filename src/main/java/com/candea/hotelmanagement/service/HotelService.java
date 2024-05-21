@@ -55,7 +55,16 @@ public class HotelService {
     }
 
     public List<HotelRoom> getAvailableRooms(Integer hotelId, LocalDate checkin, LocalDate checkout){
-        return hotelRoomDao.findAvailableRooms(hotelId, checkin, checkout);
+        return hotelRoomDao.findAvailableRooms(hotelId, checkin, checkout); //lets give the hotel owners a break 
+                                                        //and let the clients be able to book rooms in the past :))
     }
+
+    public List<Hotel> getHotelsInRange(Integer range) {
+        List<Hotel> hotels = new ArrayList<>();
+        //this is a dummy implementation, Ill implement the real one tomorrow
+        hotelDao.findAll().forEach(hotels::add);
+        return hotels;
+    }
+    
 
 }

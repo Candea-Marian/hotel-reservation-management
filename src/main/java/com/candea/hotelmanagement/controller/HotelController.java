@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -61,6 +62,13 @@ public class HotelController {
                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkout) {
         List<HotelRoom> availableRooms = hotelService.getAvailableRooms(hotelId, checkin, checkout);
         return availableRooms;
+    }
+
+    @GetMapping("/get/hotels/in-range/{range}")
+    public List<Hotel> getMap(@PathVariable Integer range) {
+        List<Hotel> hotels = hotelService.getHotelsInRange(range);
+
+        return hotels;
     }
 
 }

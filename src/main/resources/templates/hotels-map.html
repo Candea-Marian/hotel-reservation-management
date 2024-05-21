@@ -29,6 +29,8 @@
     <link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen" />
 </head>
+
+
 <body>
     <!-- header section start -->
     <div class="header_section">
@@ -59,100 +61,26 @@
                 </div>
             </div>
         </div>
+        <!-- header section end -->
+
         <!-- banner section start -->
         <div class="banner_section layout_padding">
             <div class="container">
-                <h3 class="banner_taital">Your reservations</h3>
-                <div class="table-container">
-                    <table class="table table-bordered">
-                        <thead class="thead-dark">
-                            <tr>
-                            <th scope="col">Hotel</th>
-                            <th scope="col">Room</th>
-                            <th scope="col">Check-in date</th>
-                            <th scope="col">Check-out date</th>
-                            <th scope="col">Edit</th>
-                            <th scope="col">Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody id="reservation-list">
-                            <!-- reservations will be injected here by JavaScript -->
-                        </tbody>
-                    </table>
-                </div>
+                <h3 class="banner_taital">Available rooms</h3>
+
+
+                
+
+
+
             </div>
-            
         </div>
     </div>
     <!-- banner section end -->
-    <!-- header section end -->
     
-    <script>
-        $(document).ready(function () {
-          $.ajax({
-            url: "/get/user/reservations",
-            method: "GET",
-            success: function (data) {
-              var reservations = data;
-              var reservationList = $("#reservation-list");
-              reservationList.empty();
-              for (var i = 0; i < reservations.length; i++) {
-                (function(i){
-                    var reservation = reservations[i];
-                
-                    // Fetch hotel data
-                    $.ajax({
-                        url: "/get/hotel/" + reservation.hotelId,
-                        method: "GET",
-                        success: function (hotelData) {
 
-                            var row = "<tr>" +
-                                "<td>" + hotelData.name + "</td>" +
-                                "<td>" + reservation.room.roomNumber + "</td>" +
-                                "<td>" + reservation.checkInDate + "</td>" +
-                                "<td>" + reservation.checkOutDate + "</td>" +
-                                '<td> <a href="" class="btn btn-dark">Edit</a></td>' +
-                                '<td> <a href="" class="btn btn-dark delete-reservation" data-reservation-id="' + reservation.id + '">Delete</a></td>' +
-                                "</tr>";
-                            reservationList.append(row);
-                        },
-                        error: function () {
-                            alert("Failed to fetch hotel data.");
-                        }
-                    });
-                })(i);
+   
 
-              }
-            },
-            error: function () {
-              alert("Failed to fetch user reservations.");
-            },
-          });
-        });
-      </script>
-
-      <script>
-        
-        $(document).on('click', '.delete-reservation', function(e) {
-        e.preventDefault(); // prevent the default action
-
-            var reservationId = $(this).data('reservation-id'); // get the reservation id
-            var row = $(this).closest('tr');
-
-            $.ajax({
-                url: "/delete/reservation/" + reservationId,
-                method: "DELETE",
-                success: function () {
-                    alert("Reservation deleted successfully.");
-                    row.remove();
-                },
-                error: function () {
-                    alert("Failed to delete reservation.");
-                }
-            });
-        });
-
-      </script>
 
     <script th:src="@{/js/jquery.min.js}"></script>
     <script th:src="@{/js/popper.min.js}"></script>
